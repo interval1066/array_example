@@ -56,7 +56,6 @@ optim: $(OPTIMIZE_HELPERS)
 	strip optim/$(TARGET)
 
 docs:
-	doxygen interp.dox
 
 # clean rule
 clean:
