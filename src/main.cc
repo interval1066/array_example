@@ -63,6 +63,9 @@ MemMgr<T>::GetBlock(const unsigned n)
     if(_vec->size() < 1)
         throw runtime_error("Manager empty");
 
+    if(n > MAX)
+        throw runtime_error("Exceeds capacity");
+
     auto it = next(_vec->begin(), n);
     memset(&_block, '\0', MAX);
     memcpy(&_block, it->data(), MAX);
