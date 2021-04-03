@@ -29,7 +29,7 @@ class MemMgr : public MemMgrString<T>
     array<T, mymax> _block;
 
 public:
-    MemMgr<T>();
+    MemMgr<T>() : _vec(make_unique<vector<array<T, mymax>>>()) {}
     MemMgr<T>(const MemMgr &m) : _block(m._block), _vec(m._vec) {}
     MemMgr<T>(MemMgr&& other) : _block(other._block), _vec(other._vec_)
     {
@@ -45,12 +45,6 @@ public:
 
     unsigned getSize(void) const { return _vec->size(); }
 };
-
-template <class T>
-MemMgr<T>::MemMgr() :
-    _vec(make_unique<vector<array<T, mymax>>>())
-{
-}
 
 template <class T>
 void
