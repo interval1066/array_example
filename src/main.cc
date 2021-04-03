@@ -30,13 +30,6 @@ class MemMgr : public MemMgrString<T>
 
 public:
     MemMgr<T>() : _vec(make_unique<vector<array<T, mymax>>>()) {}
-    MemMgr<T>(const MemMgr &m) : _block(m._block), _vec(m._vec) {}
-    MemMgr<T>(MemMgr&& other) : _block(other._block), _vec(other._vec_)
-    {
-        _vec = move(other._vec);
-        _block = move(other._block);
-    }
-
     void InsertBlock(const string&);
 
     unique_ptr<array<T, mymax>> GetBlock(const unsigned);
@@ -131,7 +124,6 @@ main(__attribute__((unused))int argc, __attribute__((unused))char** argv)
 
         m->RemoveBlock(2);
         m->DisplayAll();
-        cout << m->getSize() << endl;
     }
     catch(exception const& e)
     {
