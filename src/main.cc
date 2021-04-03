@@ -7,7 +7,7 @@
 #include <iterator>
 #include <stdexcept>
 
-#define MAX 256
+constexpr unsigned mymax = 256;
 
 using namespace std;
 
@@ -17,7 +17,7 @@ class MemMgrString
 public:
     virtual void InsertBlock(const string&) = 0;
     virtual void DisplayAll(void) = 0;
-    virtual unique_ptr<array<T, MAX>> GetBlock(const unsigned n) = 0;
+    virtual unique_ptr<array<T, mymax>> GetBlock(const unsigned n) = 0;
 
     virtual void RemoveBlock(const unsigned) = 0;
 };
@@ -25,13 +25,13 @@ public:
 template <class T>
 class MemMgr : public MemMgrString<T>
 {
-    unique_ptr<vector<array<T, MAX>>> _vec;
-    array<T, MAX> _block;
+    unique_ptr<vector<array<T, mymax>>> _vec;
+    array<T, mymax> _block;
 
 public:
     MemMgr<T>();
     void InsertBlock(const string&);
-    unique_ptr<array<T, MAX>> GetBlock(const unsigned);
+    unique_ptr<array<T, mymax>> GetBlock(const unsigned);
     void DisplayAll(void);
 
     void RemoveBlock(const unsigned);
@@ -40,7 +40,7 @@ public:
 
 template <class T>
 MemMgr<T>::MemMgr() :
-    _vec(make_unique<vector<array<T, MAX>>>())
+    _vec(make_unique<vector<array<T, mymax>>>())
 {
 }
 
@@ -48,29 +48,26 @@ template <class T>
 void
 MemMgr<T>::InsertBlock(const string& str)
 {
-    if(_vec->size() > MAX)
+    if(_vec->size() > mymax)
         throw runtime_error("No space left");
 
-    memset(&_block, '\0', MAX);
-    memcpy(&_block, str.c_str(), str.length());
+    fill(_block.begin(), _block.end(), 0);
+    copy(str.begin(), str.end(), _block.data());
     _vec->push_back(_block);
 }
 
 template <class T>
-unique_ptr<array<T, MAX>>
+unique_ptr<array<T, mymax>>
 MemMgr<T>::GetBlock(const unsigned n)
 {
     if(_vec->size() < 1)
         throw runtime_error("Manager empty");
 
-    if(n > MAX)
-        throw runtime_error("Exceeds capacity");
-
     auto it = next(_vec->begin(), n);
-    memset(&_block, '\0', MAX);
-    memcpy(&_block, it->data(), MAX);
+    fill(_block.begin(), _block.end(), 0);
+    copy(it->begin(), it->end(), _block.data());
 
-    return make_unique<array<T, MAX>>(_block);
+    return make_unique<array<T, mymax>>(_block);
 }
 
 template <class T>
@@ -90,7 +87,7 @@ void
 MemMgr<T>::DisplayAll()
 {
     string str;
-    typename vector<array<T, MAX>>::const_iterator it;
+    typename vector<array<T, mymax>>::const_iterator it;
     for(it = _vec->begin(); it != _vec->end(); ++it) {
         for(auto n : *it)
             str += n;
@@ -103,7 +100,7 @@ MemMgr<T>::DisplayAll()
 int
 main(__attribute__((unused))int argc, __attribute__((unused))char** argv)
 {
-    array<uint8_t, MAX> c;
+    array<uint8_t, mymax> c;
     string output;
     auto m = make_unique<MemMgr<uint8_t>>();
 
