@@ -10,6 +10,7 @@ constexpr unsigned mymax = 256;
 
 using namespace std;
 
+// Useless ancestor class, but could be used to enforce an api policy or something.
 template <class T>
 class MemMgrString
 {
@@ -29,11 +30,13 @@ class MemMgr : public MemMgrString<T>
 
 public:
     MemMgr<T>();
+    MemMgr<T>(const MemMgr &m) { m._block = _block; m._vec = _vec; }
     void InsertBlock(const string&);
+
     unique_ptr<array<T, mymax>> GetBlock(const unsigned);
     void DisplayAll(void);
-
     void RemoveBlock(const unsigned);
+
     unsigned getSize(void) const { return _vec->size(); }
 };
 
