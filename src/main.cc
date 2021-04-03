@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <array>
 #include <vector>
-#include <cstring>
 #include <memory>
 #include <iterator>
 #include <stdexcept>
@@ -50,6 +49,9 @@ MemMgr<T>::InsertBlock(const string& str)
 {
     if(_vec->size() > mymax)
         throw runtime_error("No space left");
+
+    if(str.length() > mymax)
+        throw runtime_error("Input string to long");
 
     fill(_block.begin(), _block.end(), 0);
     copy(str.begin(), str.end(), _block.data());
