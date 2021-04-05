@@ -17,7 +17,7 @@ class MemMgrString
 public:
     virtual void InsertBlock(const string&) = 0;
     virtual void DisplayAll(void) = 0;
-    virtual unique_ptr<array<T, mymax>> GetBlock(const unsigned n) = 0;
+    virtual const unique_ptr<array<T, mymax>> GetBlock(const unsigned n) = 0;
 
     virtual void RemoveBlock(const unsigned) = 0;
 };
@@ -32,7 +32,7 @@ public:
     MemMgr<T>() : _vec(make_unique<vector<array<T, mymax>>>()) {}
     void InsertBlock(const string&);
 
-    unique_ptr<array<T, mymax>> GetBlock(const unsigned);
+    const unique_ptr<array<T, mymax>> GetBlock(const unsigned);
     void DisplayAll(void);
     void RemoveBlock(const unsigned);
 
@@ -55,7 +55,7 @@ MemMgr<T>::InsertBlock(const string& str)
 }
 
 template <class T>
-unique_ptr<array<T, mymax>>
+const unique_ptr<array<T, mymax>>
 MemMgr<T>::GetBlock(const unsigned n)
 {
     if(_vec->size() < 1)
@@ -115,8 +115,9 @@ main(__attribute__((unused))int argc, __attribute__((unused))char** argv)
         str = "of the party.";
         m->InsertBlock(str);
 
-        auto block = m->GetBlock(2);
+        auto& block = m->GetBlock(2);
         copy(block->begin(), block->end(), c.begin());
+
         for(char value : c)
             output += value;
 
@@ -124,6 +125,8 @@ main(__attribute__((unused))int argc, __attribute__((unused))char** argv)
 
         m->RemoveBlock(2);
         m->DisplayAll();
+        cout << m->getSize() << " blocks total." << endl;
+
     }
     catch(exception const& e)
     {
