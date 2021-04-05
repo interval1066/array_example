@@ -6,7 +6,7 @@
 #include <iterator>
 #include <stdexcept>
 
-constexpr unsigned mymax = 256;
+static constexpr unsigned mymax = 256;
 
 using namespace std;
 
@@ -115,9 +115,8 @@ main(__attribute__((unused))int argc, __attribute__((unused))char** argv)
         str = "of the party.";
         m->InsertBlock(str);
 
-        auto& block = m->GetBlock(2);
+        const auto& block = m->GetBlock(2);
         copy(block->begin(), block->end(), c.begin());
-
         for(char value : c)
             output += value;
 
@@ -125,8 +124,7 @@ main(__attribute__((unused))int argc, __attribute__((unused))char** argv)
 
         m->RemoveBlock(2);
         m->DisplayAll();
-        cout << m->getSize() << " blocks total." << endl;
-
+        cout << m->getSize() << endl;
     }
     catch(exception const& e)
     {
