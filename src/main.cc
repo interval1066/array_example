@@ -36,7 +36,7 @@ public:
     void DisplayAll(void);
     void RemoveBlock(const unsigned);
 
-    unsigned getSize(void) const { return _vec->size(); }
+    const size_t getSize(void) const { return _vec->size(); }
 };
 
 template <class T>
