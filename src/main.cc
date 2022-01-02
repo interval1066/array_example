@@ -10,7 +10,7 @@ static constexpr unsigned mymax = 256;
 
 using namespace std;
 
-// Useless ancestor class, but could be used to enforce an api policy or something.
+// Useless base class, but could be used to enforce an api policy or something.
 template <class T>
 class MemMgrString
 {
