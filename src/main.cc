@@ -16,6 +16,8 @@ class MemMgrString
 {
 public:
     virtual void InsertBlock(const string&) = 0;
+    // Added for convineince, but normally I wouldn't put a utility method
+    // in a base class. I prefer putting these in a separate class.
     virtual void DisplayAll(void) = 0;
     virtual const unique_ptr<array<T, mymax>> GetBlock(const unsigned n) = 0;
 
